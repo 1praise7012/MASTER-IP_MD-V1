@@ -512,152 +512,125 @@ ${chalk.cyan('🧩 Command  :')} ${chalk.redBright(command)}
 
 
     switch (command) {
-        case 'menu':
+      case 'menu':
 case 'allmenu': {
-  let teks = `Hi @${m.sender.replace(/[^0-9]/g, '')} 👋 ${ucapanWaktu}
 
-🇿🇼*BOT INFORMATION*
-• Botname   : ${botname}
-• Mode      : ${setting.public ? 'Public' : 'Self'}
-• Version   : ${version}
+const menuImages = [
+ 'https://files.catbox.moe/xt88an.jpg',
+ 'https://files.catbox.moe/zpknjb.jpg'
+]
 
-📜 *MAIN MENU*
-• .qc
-• .ai
-• .gpt
-• .sticker
-• .brat
-• .rvo
-• .swm
-• .tourl
-• .removebg
-• .totalfitur
-• .runtime
+const randomThumb = menuImages[Math.floor(Math.random() * menuImages.length)]
 
-📥 *DOWNLOAD MENU*
-• .tiktok
-• .instagram
-• .mediafire
-• .ytplay
-• .ytmp3
-• .ytmp4
-• .payment
-• .gitclone
+let teks = `
+╭━━━〔 🤖 MASTER-IP BOT 〕━━━╮
+┃ 👤 User : @${m.sender.replace(/[^0-9]/g,'')}
+┃ ⚙ Mode : ${setting.public ? 'Public' : 'Self'}
+┃ 🚀 Version : ${version}
+╰━━━━━━━━━━━━━━━━━━╯
 
-🔍 *SEARCH MENU*
-• .pinterest
-• .yts
-• .gimage
-• .tiktoks
-• .npm
+╭───〔 📌 MAIN 〕
+│ • qc
+│ • ai
+│ • gpt
+│ • sticker
+│ • brat
+│ • rvo
+│ • swm
+│ • tourl
+│ • removebg
+│ • totalfitur
+│ • runtime
+╰──────────────
 
-👥 *GROUP MENU*
-• .antilink
-• .antilinkgc
-• .welcome
-• .buatgc
-• .kick
-• .warn
-• .unwarn
-• .listwarn
-• .promote
-• .demote
-• .hidetag
-• .close / .open
-• .resetlink
-• .cekidgc
-• .leave
-• .tagall
+╭───〔 ⬇ DOWNLOAD 〕
+│ • tiktok
+│ • instagram
+│ • mediafire
+│ • ytplay
+│ • ytmp3
+│ • ytmp4
+│ • payment
+│ • gitclone
+╰──────────────
 
-🖥️ *CPANEL MENU*
-• .cpanel
-• .delserver
-• .deluser
-• .listserver
-• .listuser
-• .addadmin
-• .deladmin
-• .listadmin
+╭───〔 🔎 SEARCH 〕
+│ • pinterest
+│ • yts
+│ • gimage
+│ • tiktoks
+│ • npm
+╰──────────────
 
-👑 *OWNER MENU*
-• .addsc
-• .listsc
-• .getsc
-• .addowner
-• .delowner
-• .listowner
-• .addreseller
-• .delreseller
-• .listreseller
-• .autoread
-• .autotyping
-• .backup
-• .setppbot
-• .delppbot
-• .addcase
-• .delcase
-• .getcase
-• .clearsesi
-• .delsampah
-• .public
-• .self
+╭───〔 👥 GROUP 〕
+│ • antilink
+│ • antilinkgc
+│ • welcome
+│ • buatgc
+│ • kick
+│ • warn / unwarn
+│ • listwarn
+│ • promote / demote
+│ • hidetag
+│ • close / open
+│ • resetlink
+│ • cekidgc
+│ • leave
+│ • tagall
+╰──────────────
 
-📣 *PUSH MENU*
-• .jpm
-• .jpmhidetag
-• .jpmfoto
+╭───〔 🖥 CPANEL 〕
+│ • cpanel
+│ • delserver
+│ • deluser
+│ • listserver
+│ • listuser
+│ • addadmin
+│ • deladmin
+│ • listadmin
+╰──────────────
 
-📣 *CHANNEL MENU*
-• .cekidch
-• .addch
-• .delch
-• .listch
-• .jpmch
-*𝕮𝕽𝕰𝓐𝓣𝓞𝓡:𝐌𝐀𝐒𝐓𝐄𝐑-𝐈𝐏 *
+╭───〔 👑 OWNER 〕
+│ • addsc / getsc / listsc
+│ • addowner / delowner
+│ • listowner
+│ • addreseller / delreseller
+│ • listreseller
+│ • autoread
+│ • autotyping
+│ • backup
+│ • setppbot
+│ • delppbot
+│ • addcase / delcase
+│ • clearsesi
+│ • delsampah
+│ • public / self
+╰──────────────
+
+╭───〔 📣 PUSH 〕
+│ • jpm
+│ • jpmhidetag
+│ • jpmfoto
+╰──────────────
+
+╭───〔 📡 CHANNEL 〕
+│ • cekidch
+│ • addch
+│ • delch
+│ • listch
+│ • jpmch
+╰──────────────
+
+⚡ MASTER-IP WHATSAPP BOT
+👨‍💻 Creator : MASTER-IP
 `
 
-  // RANDOM THUMBNAIL SETUP
-  const menuImages = [
-    'https://files.catbox.moe/xt88an.jpg',
-    'https://files.catbox.moe/zpknjb.jpg'
-  ]
-  const randomThumb = menuImages[Math.floor(Math.random() * menuImages.length)];
+await VranCe.sendMessage(m.chat,{
+ image:{url: randomThumb},
+ caption: teks,
+ mentions:[m.sender]
+},{quoted:m})
 
-  VranCe.sendMessage(m.chat, {
-    document: { url: thumb },
-    mimetype: "application/vnd.android.package-archive",
-    fileName: `${botname}`,
-    fileLength: 100000000000,
-    caption: teks,
-    contextInfo: {
-      mentionedJid: [m.sender],
-      forwardingScore: 999,
-      isForwarded: true,
-      externalAdReply: {
-        containsAutoReply: true,
-        mediaType: 1,
-        mediaUrl: ``,
-        renderLargerThumbnail: true,
-        showAdAttribution: false,
-        sourceUrl: ``,
-        thumbnailUrl: randomThumb, // ← UPDATED LINE
-        title: `${botname.toUpperCase()}`,
-        body: `H𝐞𝐥𝐥𝐨, ${ucapanWaktu} kak 👋`,
-        mentionedJid: [m.sender],
-        isForwarded: true,
-      },
-      forwardedNewsletterMessageInfo: {
-        newsletterJid: chjid + "120363418027651738@newsletter",
-        newsletterName: `${wm}`,
-        serverMessageId: 143
-      },
-      businessMessageForwardInfo: {
-        businessOwnerJid: VranCe.decodeJid(VranCe.user.id)
-      }
-    },
-    footer: `${wm}`,
-    viewOnce: true
-  }, { quoted: fconvert })
 }
 break
 
