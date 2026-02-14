@@ -3,7 +3,7 @@
 <!-- ========== HACKER BANNER ========== -->
 
 <!-- MASTER-IP_MD -->
-<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=220&text=MASTER-IP_MD&fontSize=55&fontAlignY=35"/>
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=220&text=MASTER-IP_MD-V1&fontSize=55&fontAlignY=35"/>
 
 <!-- A POWERFUL AND BEST WHATSAPP BOT -->
 <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=220&text=A+POWERFUL+AND+BEST+WHATSAPP+BOT&fontSize=45&fontAlignY=35"/>
