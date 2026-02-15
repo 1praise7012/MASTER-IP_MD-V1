@@ -1386,36 +1386,14 @@ break
       }
     }
     break
-        case 'video': {
-    if (!args[0]) return m.reply(`❌ Please provide a video URL!\nExample: ${prefix + command} https://youtube.com/...`)
+        case 'video':
+case 'vid': {
+  if (!args[0]) return m.reply(`Usage:\n${prefix}video <youtube link>`)
 
-    const url = args[0]
-    let buffer
-    try {
-        // First try YouTube download
-        const ytResult = await yt_search(url) // your yt_search from scrape.js
-        if (ytResult && ytResult.video && ytResult.video.url) {
-            buffer = await getBuffer(ytResult.video.url)
-        } else throw 'YouTube download failed'
-    } catch (err) {
-        console.log('YouTube failed, trying VidMate...', err)
-        try {
-            // Try VidMate fallback
-            const vmResult = await tiktokSearchVideo(url) // you might have other video scrapers
-            if (vmResult && vmResult.url) {
-                buffer = await getBuffer(vmResult.url)
-            } else throw 'VidMate download failed'
-        } catch (e) {
-            console.log('All video downloads failed:', e)
-            return m.reply('❌ Failed to download video from all sources.')
-        }
-    }
+  global.videoRequest = global.videoRequest || {}
+  global.videoRequest[m.sender] = args[0]
 
-    // Send video
-    await VranCe.sendMessage(m.chat, {
-        video: buffer,
-        caption: `🎬 Video downloaded from: ${url}`
-    }, { quoted: m })
+  m.reply(`🎥 Select quality:\n\n360\n480\n720\n\nReply with only the number.`)
 }
 break
 
