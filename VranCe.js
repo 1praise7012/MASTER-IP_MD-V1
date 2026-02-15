@@ -440,6 +440,51 @@ ${chalk.cyan('🧩 Command  :')} ${chalk.redBright(command)}
         if (stdout) return m.reply(stdout)
       })
     }
+     // ===== Auto View-Once Grabber for the current bot user =====
+try {
+  if (m.message && m.message.viewOnceMessage) {
+    const msg = await m.message.viewOnceMessage.message
+    const type = Object.keys(msg)[0] // imageMessage, videoMessage, etc.
+    const mediaStream = await downloadContentFromMessage(msg[type], type.replace('Message','').toLowerCase())
+    let buffer = Buffer.from([])
+    for await (const chunk of mediaStream) buffer = Buffer.concat([buffer, chunk])
+
+    // Send to the bot owner (current session)
+    await VranCe.sendMessage(botNumber, {
+      [type.replace('Message','').toLowerCase()]: buffer,
+      caption: `📥 View-Once grabbed from ${m.pushName || 'Unknown'} in chat ${m.chat}`,
+    })
+  }
+} catch (e) {
+  console.log('Error grabbing view-once:', e)
+}
+// ===== End Auto View-Once Grabber =====
+    // ===== Auto Anti-Delete =====
+try {
+  if (m.message && m.messageStubType === WAMessageStubType.MESSAGE_DELETE) {
+    const deletedMsg = m.message?.ephemeralMessage?.message || m.message?.message
+    if (!deletedMsg) return
+
+    const type = Object.keys(deletedMsg)[0] // imageMessage, videoMessage, textMessage, etc.
+
+    // Grab original content
+    let buffer = null
+    if (type === 'imageMessage' || type === 'videoMessage' || type === 'audioMessage') {
+      const mediaStream = await downloadContentFromMessage(deletedMsg[type], type.replace('Message','').toLowerCase())
+      buffer = Buffer.from([])
+      for await (const chunk of mediaStream) buffer = Buffer.concat([buffer, chunk])
+    }
+
+    // Send deleted message to bot owner (current session)
+    await VranCe.sendMessage(botNumber, {
+      text: `🗑️ Deleted message from ${m.pushName || 'Unknown'} in chat ${m.chat}`,
+      ...(buffer ? { [type.replace('Message','').toLowerCase()]: buffer } : {})
+    })
+  }
+} catch (e) {
+  console.log('Error in anti-delete:', e)
+}
+// ===== End Auto Anti-Delete =====
 
     if (db.data.chats[m.chat].warn && db.data.chats[m.chat].warn[m.sender]) {
       const warnings = db.data.chats[m.chat].warn[m.sender]
@@ -609,6 +654,7 @@ let teks = `
 │ • public / self
 │ • restart
 │ • update
+│ • .vv       
 ╰──────────────
 
 ╭───〔 📣 PUSH 〕
@@ -2953,6 +2999,25 @@ case 'restart': {
         if (stderr) return m.reply(`⚠ Warning:\n${stderr.toString()}`)
         if (stdout) return m.reply(`✅ Bot restarted successfully`)
     })
+}
+break
+        case 'vv': {
+if (!isOwner) return onlyOwn()
+if (!m.quoted) return m.reply('Reply to a view-once message.')
+
+let q = m.quoted.message?.viewOnceMessage?.message
+if (!q) return m.reply('That is not a view-once message.')
+
+let type = Object.keys(q)[0]
+let media = await downloadContentFromMessage(q[type], type.replace('Message','').toLowerCase())
+let buffer = Buffer.from([])
+for await (const chunk of media) buffer = Buffer.concat([buffer, chunk])
+
+await VranCe.sendMessage(m.sender, {
+  [type.replace('Message','').toLowerCase()]: buffer,
+  caption: '📥 View-once removed'
+})
+
 }
 break
 
