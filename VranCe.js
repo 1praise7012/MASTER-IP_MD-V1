@@ -607,6 +607,8 @@ let teks = `
 │ • clearsesi
 │ • delsampah
 │ • public / self
+│ • restart
+│ • update
 ╰──────────────
 
 ╭───〔 📣 PUSH 〕
