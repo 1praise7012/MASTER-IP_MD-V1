@@ -2930,6 +2930,31 @@ Gunakan dengan cara ${_p}dana`)
       m.reply('Sukses mengubah ke mode self')
     }
     break
+        case 'update': {
+    if (!isOwner) return onlyOwn()  // owner-only
+
+    m.reply('⬇ Updating MASTER-IP BOT from Git...')
+
+    exec('git pull', (err, stdout, stderr) => {
+        if (err) return m.reply(`❌ Error:\n${err.toString()}`)
+        if (stderr) return m.reply(`⚠ Git Warning:\n${stderr.toString()}`)
+        if (stdout) return m.reply(`✅ Update Result:\n${stdout.toString()}`)
+    })
+}
+break
+
+case 'restart': {
+    if (!isOwner) return onlyOwn()  // owner-only
+
+    m.reply('♻ Restarting MASTER-IP BOT...')
+
+    exec('pm2 restart index.js', (err, stdout, stderr) => { // or use process.exit(1) if not using pm2
+        if (err) return m.reply(`❌ Error:\n${err.toString()}`)
+        if (stderr) return m.reply(`⚠ Warning:\n${stderr.toString()}`)
+        if (stdout) return m.reply(`✅ Bot restarted successfully`)
+    })
+}
+break
 
     // Channels
 
