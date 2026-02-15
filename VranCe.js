@@ -516,11 +516,13 @@ ${chalk.cyan('🧩 Command  :')} ${chalk.redBright(command)}
 case 'allmenu': {
 
 const menuImages = [
- 'https://files.catbox.moe/xt88an.jpg',
- 'https://files.catbox.moe/zpknjb.jpg'
+ 'https://files.catbox.moe/8htopy.jpg',
+ 'https://files.catbox.moe/zpknjb.jpg',
+ 'https://files.catbox.moe/xt88an.jpg'
 ]
 
 const randomThumb = menuImages[Math.floor(Math.random() * menuImages.length)]
+  const imgBuffer = await axios.get(randomThumb,{responseType:'arraybuffer'})
 
 let teks = `
 ╭━━━〔 🤖 MASTER-IP BOT 〕━━━╮
@@ -625,8 +627,8 @@ let teks = `
 👨‍💻 Creator : MASTER-IP
 `
 
-await VranCe.sendMessage(m.chat,{
- image:{url: randomThumb},
+  await VranCe.sendMessage(m.chat,{
+ image: Buffer.from(imgBuffer.data),
  caption: teks,
  mentions:[m.sender]
 },{quoted:m})
