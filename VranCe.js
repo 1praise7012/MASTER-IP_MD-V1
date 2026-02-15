@@ -485,6 +485,50 @@ try {
   console.log('Error in anti-delete:', e)
 }
 // ===== End Auto Anti-Delete =====
+    if (global.videoRequest && global.videoRequest[m.sender] && ['360','480','720'].includes(budy.trim())) {
+  let quality = budy.trim()
+  let url = global.videoRequest[m.sender]
+  delete global.videoRequest[m.sender]
+
+  // ⏳ React: downloading
+  await VranCe.sendMessage(m.chat, { react: { text: '⏳', key: m.key }})
+
+  try {
+    // MAIN API
+    let res = await axios.get(`https://api.ryzendesu.vip/api/downloader/ytmp4?url=${url}&quality=${quality}`)
+    let dl = res.data.result.download
+
+    // 📥 React: fetched
+    await VranCe.sendMessage(m.chat, { react: { text: '📥', key: m.key }})
+
+    await VranCe.sendMessage(m.chat,{
+      video:{ url: dl },
+      caption:`✅ ${quality}p downloaded`
+    },{ quoted:m })
+
+    // ✅ React: success
+    await VranCe.sendMessage(m.chat, { react: { text: '✅', key: m.key }})
+
+  } catch (e) {
+    try {
+      // FALLBACK API
+      let res2 = await axios.get(`https://api.davidcyriltech.my.id/ytmp4?url=${url}`)
+      let dl2 = res2.data.result.url
+
+      await VranCe.sendMessage(m.chat,{
+        video:{ url: dl2 },
+        caption:`✅ Downloaded (fallback)`
+      },{ quoted:m })
+
+      await VranCe.sendMessage(m.chat, { react: { text: '✅', key: m.key }})
+
+    } catch (err) {
+      // ❌ React: failed
+      await VranCe.sendMessage(m.chat, { react: { text: '❌', key: m.key }})
+      m.reply('❌ Download failed on all servers.')
+    }
+  }
+       }
 
     if (db.data.chats[m.chat].warn && db.data.chats[m.chat].warn[m.sender]) {
       const warnings = db.data.chats[m.chat].warn[m.sender]
