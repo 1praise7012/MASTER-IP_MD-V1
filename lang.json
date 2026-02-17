@@ -1,0 +1,15 @@
+{
+  "onlyAdmin": "This feature can only be accessed by admins",
+  "onlyOwner": "This feature can only be accessed by the owner",
+  "onlyBotAdmin": "This feature can only be accessed if the bot is admin",
+  "onlyGroup": "This feature can only be accessed in a group",
+  "onlyPrivate": "This feature can only be accessed in private chat",
+  "onlyReseller": "This feature can only be accessed by resellers",
+  "greetingMorning": "Good morning",
+  "greetingAfternoon": "Good afternoon",
+  "greetingEvening": "Good evening",
+  "greetingNight": "Good night",
+  "downloadFailed": "❌ Download failed on all servers.",
+  "downloadSuccess": "✅ Downloaded successfully",
+  "downloadFallback": "✅ Downloaded (fallback)"
+}
