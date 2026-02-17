@@ -18,6 +18,8 @@
     "moment-timezone": "^0.5.46",
     "node-fetch": "^2.6.9",
     "node-webpmux": "^3.1.0",
-    "pino": "^8.3.0"
+    "pino": "^8.3.0",
+    "ytdl-core": "^4.11.5",
+    "ffmpeg-static": "^5.2.0"
   }
 }
