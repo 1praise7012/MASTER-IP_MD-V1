@@ -1283,7 +1283,6 @@ case 'ytaudio': {
 }
 break
 
-case 'video':
 case 'ytmp4':
 case 'ytvideo': {
   try {
@@ -1358,7 +1357,50 @@ case 'ytvideo': {
   }
 }
 break
+case 'video': {
+  if (!text) return m.reply('Give YouTube link or song name')
 
+  await VranCe.sendMessage(m.chat, { react: { text: '⏳', key: m.key }})
+
+  let url = text
+  let downloaded = false
+
+  // API LIST (tries in order)
+  const apis = [
+    async () => {
+      let r = await axios.get(`https://api.ryzendesu.vip/api/downloader/ytmp4?url=${url}`)
+      return r.data.result.download
+    },
+    async () => {
+      let r = await axios.get(`https://api.davidcyriltech.my.id/ytmp4?url=${url}`)
+      return r.data.result.url
+    }
+  ]
+
+  for (let api of apis) {
+    try {
+      let dl = await api()
+
+      await VranCe.sendMessage(m.chat, {
+        video: { url: dl },
+        caption: '✅ Video downloaded'
+      }, { quoted: m })
+
+      await VranCe.sendMessage(m.chat, { react: { text: '✅', key: m.key }})
+      downloaded = true
+      break
+
+    } catch (e) {
+      console.log('API failed, trying next...')
+    }
+  }
+
+  if (!downloaded) {
+    await VranCe.sendMessage(m.chat, { react: { text: '❌', key: m.key }})
+    m.reply('❌ All video servers failed.')
+  }
+}
+break
     case 'git':
     case 'gitclone': {
       try {
