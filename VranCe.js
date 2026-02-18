@@ -484,53 +484,6 @@ try {
 } catch (e) {
   console.log('Error in anti-delete:', e)
 }
-// ===== End Auto Anti-Delete =====
-    if (global.videoRequest && global.videoRequest[m.sender] && ['360','480','720'].includes(budy.trim())) {
-
-let q = budy.trim()
-let url = global.videoRequest[m.sender].url
-delete global.videoRequest[m.sender]
-
-await VranCe.sendMessage(m.chat,{ react:{ text:'⏳', key:m.key }})
-
-let file = path.join(__dirname, `vid_${Date.now()}.mp4`)
-
-try {
-
-const video = ytdl(url, { quality: 'highestvideo' })
-const audio = ytdl(url, { quality: 'highestaudio' })
-
-const ff = spawn(ffmpeg, [
-'-i','pipe:3',
-'-i','pipe:4',
-'-map','0:v',
-'-map','1:a',
-'-c:v','copy',
-'-c:a','aac',
-file
-], { stdio: ['inherit','inherit','inherit','pipe','pipe'] })
-
-video.pipe(ff.stdio[3])
-audio.pipe(ff.stdio[4])
-
-ff.on('close', async () => {
-
-await VranCe.sendMessage(m.chat,{ react:{ text:'✅', key:m.key }})
-
-await VranCe.sendMessage(m.chat,{
-video: fs.readFileSync(file),
-caption:`✅ Downloaded (${q}p)`
-},{ quoted:m })
-
-fs.unlinkSync(file)
-
-})
-
-} catch (e) {
-await VranCe.sendMessage(m.chat,{ react:{ text:'❌', key:m.key }})
-m.reply('❌ Download failed.')
-}
-    }
 
     if (db.data.chats[m.chat].warn && db.data.chats[m.chat].warn[m.sender]) {
       const warnings = db.data.chats[m.chat].warn[m.sender]
@@ -1330,6 +1283,7 @@ case 'ytaudio': {
 }
 break
 
+case 'video':
 case 'ytmp4':
 case 'ytvideo': {
   try {
@@ -1432,26 +1386,6 @@ break
       }
     }
     break
-        const ytdl = require('ytdl-core')
-const fs = require('fs')
-const ffmpeg = require('ffmpeg-static')
-const { spawn } = require('child_process')
-const path = require('path')
-
-case 'video': {
-if (!text) return m.reply('Give song name or YouTube link')
-
-global.videoRequest = global.videoRequest || {}
-
-await m.reply(`🎥 Select quality:\n\n360\n480\n720\n\nReply with only the number.`)
-
-global.videoRequest[m.sender] = {
-chat: m.chat,
-url: text
-}
-}
-break
-break
 
     // Search
 
