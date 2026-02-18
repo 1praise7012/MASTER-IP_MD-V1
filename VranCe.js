@@ -1439,53 +1439,18 @@ const { spawn } = require('child_process')
 const path = require('path')
 
 case 'video': {
-if (!text) return reply('Give song name or YouTube link')
+if (!text) return m.reply('Give song name or YouTube link')
 
-await reply(`🎥 Select quality:\n\n360\n480\n720\n\nReply with only the number.`)
+global.videoRequest = global.videoRequest || {}
 
-conn.videoRequest = {
+await m.reply(`🎥 Select quality:\n\n360\n480\n720\n\nReply with only the number.`)
+
+global.videoRequest[m.sender] = {
 chat: m.chat,
 url: text
 }
 }
 break
-
-if (conn.videoRequest && m.chat === conn.videoRequest.chat && ['360','480','720'].includes(body)) {
-
-let q = body
-let url = conn.videoRequest.url
-delete conn.videoRequest
-
-await react('⏳')
-
-let file = path.join(__dirname, `vid_${Date.now()}.mp4`)
-
-const video = ytdl(url, { quality: 'highestvideo' })
-const audio = ytdl(url, { quality: 'highestaudio' })
-
-const ff = spawn(ffmpeg, [
-'-i','pipe:3',
-'-i','pipe:4',
-'-map','0:v',
-'-map','1:a',
-'-c:v','copy',
-'-c:a','aac',
-file
-], { stdio: ['inherit','inherit','inherit','pipe','pipe'] })
-
-video.pipe(ff.stdio[3])
-audio.pipe(ff.stdio[4])
-
-ff.on('close', async () => {
-await react('✅')
-await conn.sendMessage(m.chat,{
-video: fs.readFileSync(file),
-caption:`✅ Downloaded (${q}p)`
-},{quoted:m})
-
-fs.unlinkSync(file)
-})
-}
 break
 
     // Search
