@@ -486,49 +486,51 @@ try {
 }
 // ===== End Auto Anti-Delete =====
     if (global.videoRequest && global.videoRequest[m.sender] && ['360','480','720'].includes(budy.trim())) {
-  let quality = budy.trim()
-  let url = global.videoRequest[m.sender]
-  delete global.videoRequest[m.sender]
 
-  // ⏳ React: downloading
-  await VranCe.sendMessage(m.chat, { react: { text: '⏳', key: m.key }})
+let q = budy.trim()
+let url = global.videoRequest[m.sender].url
+delete global.videoRequest[m.sender]
 
-  try {
-    // MAIN API
-    let res = await axios.get(`https://api.ryzendesu.vip/api/downloader/ytmp4?url=${url}&quality=${quality}`)
-    let dl = res.data.result.download
+await VranCe.sendMessage(m.chat,{ react:{ text:'⏳', key:m.key }})
 
-    // 📥 React: fetched
-    await VranCe.sendMessage(m.chat, { react: { text: '📥', key: m.key }})
+let file = path.join(__dirname, `vid_${Date.now()}.mp4`)
 
-    await VranCe.sendMessage(m.chat,{
-      video:{ url: dl },
-      caption:`✅ ${quality}p downloaded`
-    },{ quoted:m })
+try {
 
-    // ✅ React: success
-    await VranCe.sendMessage(m.chat, { react: { text: '✅', key: m.key }})
+const video = ytdl(url, { quality: 'highestvideo' })
+const audio = ytdl(url, { quality: 'highestaudio' })
 
-  } catch (e) {
-    try {
-      // FALLBACK API
-      let res2 = await axios.get(`https://api.davidcyriltech.my.id/ytmp4?url=${url}`)
-      let dl2 = res2.data.result.url
+const ff = spawn(ffmpeg, [
+'-i','pipe:3',
+'-i','pipe:4',
+'-map','0:v',
+'-map','1:a',
+'-c:v','copy',
+'-c:a','aac',
+file
+], { stdio: ['inherit','inherit','inherit','pipe','pipe'] })
 
-      await VranCe.sendMessage(m.chat,{
-        video:{ url: dl2 },
-        caption:`✅ Downloaded (fallback)`
-      },{ quoted:m })
+video.pipe(ff.stdio[3])
+audio.pipe(ff.stdio[4])
 
-      await VranCe.sendMessage(m.chat, { react: { text: '✅', key: m.key }})
+ff.on('close', async () => {
 
-    } catch (err) {
-      // ❌ React: failed
-      await VranCe.sendMessage(m.chat, { react: { text: '❌', key: m.key }})
-      m.reply('❌ Download failed on all servers.')
+await VranCe.sendMessage(m.chat,{ react:{ text:'✅', key:m.key }})
+
+await VranCe.sendMessage(m.chat,{
+video: fs.readFileSync(file),
+caption:`✅ Downloaded (${q}p)`
+},{ quoted:m })
+
+fs.unlinkSync(file)
+
+})
+
+} catch (e) {
+await VranCe.sendMessage(m.chat,{ react:{ text:'❌', key:m.key }})
+m.reply('❌ Download failed.')
+}
     }
-  }
-       }
 
     if (db.data.chats[m.chat].warn && db.data.chats[m.chat].warn[m.sender]) {
       const warnings = db.data.chats[m.chat].warn[m.sender]
