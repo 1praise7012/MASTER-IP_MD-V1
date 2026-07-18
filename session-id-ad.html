@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MASTER-IP Session ID</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #09111f;
+      --panel: rgba(13, 20, 34, 0.92);
+      --accent: #55d6be;
+      --accent-2: #8a7dff;
+      --text: #eef5ff;
+      --muted: #9fb1c9;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, system-ui, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(85, 214, 190, 0.20), transparent 32%),
+        radial-gradient(circle at bottom right, rgba(138, 125, 255, 0.18), transparent 30%),
+        linear-gradient(160deg, #050b16, var(--bg));
+      color: var(--text);
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+    .card {
+      width: min(720px, 100%);
+      background: var(--panel);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 28px;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.45);
+      overflow: hidden;
+    }
+    .hero {
+      padding: 36px 30px 18px;
+      background: linear-gradient(135deg, rgba(85,214,190,0.18), rgba(138,125,255,0.16));
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    h1 { margin: 0 0 10px; font-size: clamp(2rem, 4vw, 3.4rem); }
+    p { margin: 0; color: var(--muted); line-height: 1.6; }
+    .content { padding: 28px 30px 34px; }
+    .block {
+      margin-top: 18px;
+      padding: 18px 20px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    code {
+      display: block;
+      margin-top: 10px;
+      padding: 16px;
+      border-radius: 14px;
+      background: rgba(0,0,0,0.35);
+      color: #d8fff6;
+      overflow-x: auto;
+    }
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .note {
+      margin-top: 20px;
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <section class="hero">
+      <h1>MASTER-IP Session ID</h1>
+      <p>Use this page as a simple deployment advert or helper screen for users who need to paste a session ID after setup.</p>
+    </section>
+    <section class="content">
+      <div class="block">
+        <strong>How to use</strong>
+        <code>1. Start the bot on your panel.<br>2. Pair the WhatsApp account.<br>3. Copy the generated session ID.<br>4. Paste it back into the bot when requested.</code>
+      </div>
+      <div class="block">
+        <strong>Deployment note</strong>
+        <p>This file is standalone and can be hosted separately from the bot source as a lightweight landing page.</p>
+      </div>
+      <p class="note">Need help? Open the README and look for the Session ID page link.</p>
+    </section>
+  </main>
+</body>
+</html>
